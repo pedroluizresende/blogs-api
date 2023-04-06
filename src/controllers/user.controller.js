@@ -20,7 +20,19 @@ const getAll = async (req, res) => {
      res.status(200).json(response.message);
 };
 
+const getById = async (req, res) => {
+  const { id } = req.params;
+  const response = await userService.getById(id);
+  if (response.type) {
+    return res.status(errorMap
+       .mapError(response.type)).json({ message: response.message }); 
+   }
+   console.log(response);
+     res.status(200).json(response.message);
+};
+
 module.exports = {
   insert,
   getAll,
+  getById,
 };
