@@ -1,5 +1,4 @@
 const { newUser } = require('./schemas');
-const { User } = require('../../models');
 
 module.exports = (user) => {
   const { error } = newUser.validate(user);
