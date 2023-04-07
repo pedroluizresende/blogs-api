@@ -28,7 +28,7 @@ const getAll = async () => {
 
   return { type: null, message: users };
 };
-
+// 
 const getById = async (id) => {
   const user = await User.findByPk(id, {
     attributes: { exclude: ['password'] },
