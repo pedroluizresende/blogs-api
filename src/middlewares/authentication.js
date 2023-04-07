@@ -2,7 +2,6 @@ const { validateToken } = require('../utils/auth');
 
 module.exports = (req, res, next) => {
   try {
-    console.log(req.headers);
     const { authorization } = req.headers;
 
     if (!authorization) {
@@ -11,8 +10,9 @@ module.exports = (req, res, next) => {
 }
 
     const response = validateToken(authorization);
-    console.log(response);
+    if (response) {
     next();
+    }
   } catch (err) {
     console.log(err);
     return res.status(401).json({ message: 'Expired or invalid token' });

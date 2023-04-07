@@ -7,6 +7,11 @@ const newUser = Joi.object({
   image: Joi.string(),
 });
 
+const newCategorySchema = Joi.object({
+  name: Joi.string().min(2).required(),
+});
+
 module.exports = {
   newUser,
+  newCategorySchema,
 };
