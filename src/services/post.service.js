@@ -1,4 +1,4 @@
-const { sequelize, BlogPost, PostCategory } = require('../models');
+const { BlogPost, PostCategory } = require('../models');
 const { validateCategorysId } = require('./validations/validateNewPost');
 
 const insert = async (userId, { title, content, categoryIds }) => {
