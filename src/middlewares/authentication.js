@@ -11,6 +11,9 @@ module.exports = (req, res, next) => {
 
     const response = validateToken(authorization);
     if (response) {
+      req.user = {
+        ...response,
+      };
     next();
     }
   } catch (err) {

@@ -6,7 +6,7 @@ const PostCategoryModel = (sequelize, DataTypes) => {
       categoryId: DataTypes.INTEGER
     },
     {
-      tableName: 'course_modules',
+      tableName: 'posts_categories',
       underscored: true,
       timestamps: false
     });

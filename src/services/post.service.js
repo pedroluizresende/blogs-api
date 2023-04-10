@@ -1,11 +1,25 @@
+const { sequelize, BlogPost, PostCategory } = require('../models');
 const { validateCategorysId } = require('./validations/validateNewPost');
 
-const insert = async ({ title, content, categoryIds }) => {
+const insert = async (userId, { title, content, categoryIds }) => {
 const error = await validateCategorysId(categoryIds);
-console.log(error);
 if (error.type) return error;
 
-return { type: null, message: 'tudo certo' };
+ await BlogPost.create({
+  title, content, userId,
+});
+
+const newPost = await BlogPost.findOne({
+  where: { content, title },
+});
+await Promise.all(
+  categoryIds.map(async (c) => PostCategory.create({
+    postId: newPost.id,
+    categoryId: c,
+  })),
+);
+
+return { type: null, message: newPost };
 };
 
 module.exports = {

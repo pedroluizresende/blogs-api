@@ -10,7 +10,7 @@ const signIn = async (userInfo) => {
 
   if (!user) return { type: 'INVALID_FIELDS', message: 'Invalid fields' };
 
-  const token = generateToken({ email: user.email });
+  const token = generateToken({ id: user.id, email: user.email });
   console.log(token);
   return { type: null, message: token };
 };
