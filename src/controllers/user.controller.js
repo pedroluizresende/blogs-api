@@ -31,8 +31,22 @@ const getById = async (req, res) => {
      res.status(200).json(response.message);
 };
 
+const deleteOwnUser = async (req, res) => {
+  const { id } = req.user;
+
+  const response = userService.deleteOwnUser(id);
+
+  if (response.type) {
+    return res.status(errorMap
+       .mapError(response.type)).json({ message: response.message }); 
+   }
+
+   res.sendStatus(204);
+};
+
 module.exports = {
   insert,
   getAll,
   getById,
+  deleteOwnUser,
 };

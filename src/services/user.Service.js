@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, BlogPost, sequelize, PostCategory } = require('../models');
 const { generateToken } = require('../utils/auth');
 const validateNewUser = require('./validations/validateNewUser');
 
@@ -39,8 +39,34 @@ const getById = async (id) => {
   return { type: null, message: user };
 };
 
+const deleteOwnUser = async (userId) => {
+  const t = await sequelize.transaction();
+  try {
+    const posts = await BlogPost.findAll({ where: { userId } });
+
+    await Promise.all(
+      posts.map(async (p) => PostCategory.destroy({ where: { postId: p.id } }, { transaction: t })),
+    );
+    // exclua as postagens associadas a este usuário
+    await BlogPost.destroy({ where: { userId } }, { transaction: t });
+
+    // exclua o próprio usuário
+    await User.destroy({ where: { id: userId } }, { transaction: t });
+
+    // confirme a transação
+    await t.commit();
+
+    return { type: null, message: '' };
+  } catch (error) {
+    // reverta a transação em caso de erro
+    await t.rollback();
+    throw error;
+  }
+};
+
 module.exports = {
   insert,
   getAll,
   getById,
+  deleteOwnUser,
 };
