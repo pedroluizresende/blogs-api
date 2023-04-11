@@ -46,9 +46,23 @@ const update = async (req, res) => {
    res.status(200).json(response.message);
 };
 
+const remove = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.id;
+  const response = await postService.remove(id, userId);
+
+  if (response.type) {
+    return res.status(errorMap
+       .mapError(response.type)).json({ message: response.message }); 
+   }
+
+   res.sendStatus(204);
+};
+
 module.exports = {
   insert,
   getAll,
   getBydId,
   update,
+  remove,
 };

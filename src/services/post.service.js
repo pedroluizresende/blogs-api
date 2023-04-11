@@ -1,4 +1,4 @@
-const { BlogPost, PostCategory, Category, User } = require('../models');
+const { BlogPost, PostCategory, Category, User, sequelize } = require('../models');
 const { validateCategorysId } = require('./validations/validateNewPost');
 
 const insert = async (userId, { title, content, categoryIds }) => {
@@ -47,7 +47,7 @@ const update = async (id, userId, { title, content }) => {
       where: { id },
     });
 
-    console.log('ids:', post.id, userId);
+    console.log('ids:', post.userId, userId);
     if (post.id !== +userId) return { type: 'NOT_AUTH', message: 'Unauthorized user' };
 
     await BlogPost.update(
@@ -64,9 +64,35 @@ const update = async (id, userId, { title, content }) => {
     return { type: null, message: updatedPost };
   };
 
+  const remove = async (id, userId) => {
+    const post = await BlogPost.findOne({
+      where: { id },
+    });
+  
+    if (!post) return { type: 'NOT_FOUND', message: 'Post does not exist' };
+  
+    if (post.userId !== +userId) return { type: 'NOT_AUTH', message: 'Unauthorized user' };
+  
+    const t = await sequelize.transaction();
+     
+    try {
+      await PostCategory.destroy({ where: { postId: id } }, { transaction: t });
+  
+      await BlogPost.destroy({ where: { id } }, { transaction: t });
+  
+      await t.commit();
+  
+      return { type: null, message: '' };
+    } catch (error) {
+      await t.rollback();
+      throw error;
+    }
+  };
+
 module.exports = {
   insert,
   getAll,
   getBydId,
   update,
+  remove,
 };
