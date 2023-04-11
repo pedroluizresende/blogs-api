@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { BlogPost, PostCategory, Category, User, sequelize } = require('../models');
 const { validateCategorysId } = require('./validations/validateNewPost');
 
@@ -47,7 +48,6 @@ const update = async (id, userId, { title, content }) => {
       where: { id },
     });
 
-    console.log('ids:', post.userId, userId);
     if (post.id !== +userId) return { type: 'NOT_AUTH', message: 'Unauthorized user' };
 
     await BlogPost.update(
@@ -89,10 +89,46 @@ const update = async (id, userId, { title, content }) => {
     }
   };
 
+  const postsByTitle = async (term) => {
+    console.log('term: ', term);
+    const posts = await BlogPost.findAll({
+      where: { title: { [Op.like]: `%${term}%` } },
+      include: [{ model: Category, as: 'categories' },
+      { model: User, as: 'user', attributes: { exclude: 'password' } }],
+    });
+    console.log('posts por titulo: ', posts);
+
+    return posts;
+  };
+
+  const searchByTerm = async (term) => {
+    console.log('term:', term);
+
+    if (!term) {
+      const allPosts = await BlogPost.findAll({
+        include: [{ model: Category, as: 'categories' },
+      { model: User, as: 'user', attributes: { exclude: 'password' } }],
+      });
+      return { type: null, message: allPosts };
+    }
+
+    const postsByContent = await BlogPost.findAll({
+      where: { content: { [Op.like]: `%${term}%` } },
+      include: [{ model: Category, as: 'categories' },
+      { model: User, as: 'user', attributes: { exclude: 'password' } }],
+    });
+    const byTitle = await postsByTitle(term);
+
+    const allPosts = [...byTitle, ...postsByContent];
+
+    return { type: null, message: allPosts };
+  };
+
 module.exports = {
   insert,
   getAll,
   getBydId,
   update,
   remove,
+  searchByTerm,
 };

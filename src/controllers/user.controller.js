@@ -16,7 +16,6 @@ const getAll = async (req, res) => {
     return res.status(errorMap
        .mapError(response.type)).json({ message: response.message }); 
    }
-   console.log(response);
      res.status(200).json(response.message);
 };
 
@@ -27,7 +26,6 @@ const getById = async (req, res) => {
     return res.status(errorMap
        .mapError(response.type)).json({ message: response.message }); 
    }
-   console.log(response);
      res.status(200).json(response.message);
 };
 

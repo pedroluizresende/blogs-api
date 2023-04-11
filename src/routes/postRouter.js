@@ -10,6 +10,8 @@ router.post('/', authentication, validatePostFields, postController.insert);
 
 router.get('/', authentication, postController.getAll);
 
+router.get('/search', authentication, postController.searchByTerm);
+
 router.get('/:id', authentication, postController.getBydId);
 
 router.put('/:id', authentication, validateUpdatePostFields, postController.update);
