@@ -1,13 +1,16 @@
-# :construction: README customizado em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.
+# Blogs API
 
-Para deixá-lo com a sua cara, basta alterar o seguinte arquivo da sua máquina: ~/.student-repo-publisher/custom/_NEW_README.md
+This project is an object of study in <a href="https://www.betrybe.com/" target="_blank" rel="noopener noreferrer">Trybe</a> web development course, specifically the back-end module.
 
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+##Objetivo
+
+Project objective was to create a RESTful API using Express from node, and use the new learnings I got with Sequelize, to facilitate the communication between the database and the Application
+
+## Technologies used
+
+- node.js
+- Express
+- Sequelize
+- Mysql
+- Mysql2
+- JsonWebToken - Jwt(para autenticação de usuários)
